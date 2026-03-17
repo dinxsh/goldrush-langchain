@@ -1,0 +1,68 @@
+{
+  "name": "@covalenthq/langchain-goldrush",
+  "version": "1.0.0",
+  "description": "LangChain tools for the GoldRush (Covalent) on-chain data API — all 37 endpoints as StructuredTool instances",
+  "author": "Covalent (GoldRush)",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write src tests examples",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "vitest run tests/e2e --reporter=verbose",
+    "generate:chains": "tsx scripts/generate-chain-names.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@covalenthq/client-sdk": ">=4.0.0",
+    "@langchain/core": ">=0.2.0",
+    "zod": ">=3.0.0"
+  },
+  "devDependencies": {
+    "@langchain/anthropic": "^0.3.0",
+    "@langchain/core": "^0.3.0",
+    "@langchain/openai": "^0.3.0",
+    "@covalenthq/client-sdk": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "langchain": "^0.3.0",
+    "msw": "^2.0.0",
+    "prettier": "^3.0.0",
+    "tsx": "^4.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^2.0.0",
+    "zod": "^3.22.0"
+  },
+  "keywords": [
+    "langchain",
+    "goldrush",
+    "covalent",
+    "blockchain",
+    "web3",
+    "onchain",
+    "tools",
+    "ai",
+    "llm",
+    "agent"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/covalenthq/langchain-goldrush"
+  },
+  "homepage": "https://goldrush.dev"
+}

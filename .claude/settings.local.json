@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"^[^/]*$|components|lib|app|hooks\")",
+      "Bash(wc -l /c/Users/hp/Desktop/code/startups/covalenthq/assignment/next-shadcn-dashboard-starter/src/**/*.ts*)",
+      "Bash(curl -s --max-time 30 \"https://api.covalenthq.com/v1/openapi.json\" -o \"/c/Users/hp/Desktop/code/startups/covalenthq/toolings/langchain/covalent_openapi.json\")",
+      "Bash(curl -s --max-time 20 https://api.github.com/orgs/covalenthq/repos?per_page=50)",
+      "Bash(python3 -c \":*)",
+      "Bash(node -e \":*)",
+      "Bash(curl -s --max-time 20 \"https://api.github.com/repos/covalenthq/goldrush-mcp-server/contents/src/services\")"
+    ]
+  }
+}
