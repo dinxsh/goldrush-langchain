@@ -57,10 +57,7 @@ Note: provide either blockHeight OR date, not both.`;
           input.address,
           {
             quoteCurrency: input.quoteCurrency as "USD",
-            nft: input.nft,
-            noNftFetch: input.noNftFetch,
             noSpam: input.noSpam,
-            noNftAssetMetadata: input.noNftAssetMetadata,
             blockHeight: input.blockHeight,
             date: input.date,
           }

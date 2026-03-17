@@ -36,7 +36,7 @@ Use when: user wants latest activity, recent sends/receives, or what a wallet di
   protected async _call(input: z.infer<typeof this.schema>): Promise<string> {
     try {
       const result = await this.client.call(this.name, () =>
-        this.client.TransactionService.getRecentTransactionsForAddress(
+        this.client.TransactionService.getAllTransactionsForAddressByPage(
           input.chainName,
           input.walletAddress,
           {

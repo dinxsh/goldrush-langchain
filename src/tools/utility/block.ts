@@ -4,18 +4,18 @@ import { ChainNameEnum } from "../../types.js";
 import type { GoldRushClient } from "../../client.js";
 import { formatResponse, formatError } from "../../utils/format-response.js";
 
-export class BulkTransactionsTool extends StructuredTool {
-  name = "goldrush_bulk_transactions";
-  description = `Fetch the earliest transactions for a wallet address — the genesis activity on a chain.
-Returns the oldest transactions from the wallet's history.
-Use when: user asks about first transactions, wallet inception, earliest on-chain activity, or wallet age.`;
+export class BlockTool extends StructuredTool {
+  name = "goldrush_block";
+  description = `Fetch details for a single block on a chain.
+Returns block number, timestamp, block hash, miner address, gas used, gas limit, and transaction count.
+Use 'latest' to fetch the most recent block.
+Use when: user asks about a specific block, wants block explorer data, or needs block timestamp for a given height.`;
 
   schema = z.object({
     chainName: ChainNameEnum.describe("Blockchain network slug"),
-    walletAddress: z
-      .string()
-      .min(1)
-      .describe("Wallet address"),
+    blockHeight: z
+      .union([z.literal("latest"), z.number().int().positive()])
+      .describe("Block number or 'latest' for the most recent block"),
   });
 
   constructor(private client: GoldRushClient) {
@@ -25,10 +25,9 @@ Use when: user asks about first transactions, wallet inception, earliest on-chai
   protected async _call(input: z.infer<typeof this.schema>): Promise<string> {
     try {
       const result = await this.client.call(this.name, () =>
-        this.client.TransactionService.getAllTransactionsForAddressByPage(
+        this.client.BaseService.getBlock(
           input.chainName,
-          input.walletAddress,
-          {}
+          String(input.blockHeight)
         )
       );
       return formatResponse(result, this.name, this.client.config.maxResponseSize);

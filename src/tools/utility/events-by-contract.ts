@@ -5,41 +5,31 @@ import type { GoldRushClient } from "../../client.js";
 import { formatResponse, formatError } from "../../utils/format-response.js";
 import { clampPage } from "../../utils/paginate.js";
 
-export class Erc20TransfersTool extends StructuredTool {
-  name = "goldrush_erc20_token_transfers";
-  description = `Fetch ERC20 token transfer events (in and out) for a wallet address with historical prices.
-Returns sender address, receiver address, token amount, token contract, and USD value at transfer time.
-Can filter to a specific token contract address. Paginated — default 10 results per page.
-Supports ENS names, RNS, Lens handles, and Unstoppable Domains.
-Use when: user asks about transfer history, token flow analysis, specific token movements, or received/sent tokens.`;
+export class EventsByContractTool extends StructuredTool {
+  name = "goldrush_events_by_contract";
+  description = `Fetch all event logs emitted by a specific smart contract address on a chain.
+Returns decoded log events with event names, parameters, and block metadata.
+Useful for monitoring a particular contract's on-chain interactions and activity.
+Use when: user wants to monitor a specific contract, track DeFi protocol events, or analyze a dApp's activity.`;
 
   schema = z.object({
     chainName: ChainNameEnum.describe("Blockchain network slug"),
-    walletAddress: z
-      .string()
-      .min(1)
-      .describe("Wallet address or domain name"),
-    quoteCurrency: z
-      .string()
-      .optional()
-      .default("USD")
-      .describe("Currency for value conversion (default: USD)"),
     contractAddress: z
       .string()
-      .optional()
-      .describe("Filter transfers to a specific ERC20 token contract address"),
+      .min(1)
+      .describe("Smart contract address to fetch events from"),
     startingBlock: z
       .number()
       .int()
       .positive()
       .optional()
-      .describe("Start of block range for filtering transfers"),
+      .describe("Starting block number"),
     endingBlock: z
       .number()
       .int()
       .positive()
       .optional()
-      .describe("End of block range for filtering transfers"),
+      .describe("Ending block number"),
     pageSize: z
       .number()
       .int()
@@ -47,14 +37,14 @@ Use when: user asks about transfer history, token flow analysis, specific token 
       .max(100)
       .optional()
       .default(10)
-      .describe("Results per page (default: 10, max: 100)"),
+      .describe("Results per page (default: 10)"),
     pageNumber: z
       .number()
       .int()
       .min(0)
       .optional()
       .default(0)
-      .describe("Page number, 0-indexed (default: 0 = most recent)"),
+      .describe("Page number, 0-indexed"),
   });
 
   constructor(private client: GoldRushClient) {
@@ -65,12 +55,10 @@ Use when: user asks about transfer history, token flow analysis, specific token 
     try {
       const { pageSize, pageNumber } = clampPage(input.pageSize, input.pageNumber);
       const result = await this.client.call(this.name, () =>
-        this.client.BalanceService.getErc20TransfersForWalletAddressByPage(
+        this.client.BaseService.getLogEventsByAddressByPage(
           input.chainName,
-          input.walletAddress,
+          input.contractAddress,
           {
-            quoteCurrency: input.quoteCurrency as "USD",
-            contractAddress: input.contractAddress ?? null,
             startingBlock: input.startingBlock,
             endingBlock: input.endingBlock,
             pageSize,

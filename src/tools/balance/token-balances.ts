@@ -58,10 +58,7 @@ Use when: user asks about wallet holdings, token portfolio, asset balances, or n
           input.address,
           {
             quoteCurrency: input.quoteCurrency as "USD",
-            nft: input.nft,
-            noNftFetch: input.noNftFetch,
             noSpam: input.noSpam,
-            noNftAssetMetadata: input.noNftAssetMetadata,
           }
         )
       );

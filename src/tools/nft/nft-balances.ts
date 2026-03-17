@@ -47,7 +47,6 @@ Use when: user asks about NFT collection, digital assets, what NFTs they own, or
           {
             noSpam: input.noSpam,
             noNftAssetMetadata: input.noNftAssetMetadata,
-            withUncached: input.withUncached,
           }
         )
       );

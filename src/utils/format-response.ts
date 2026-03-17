@@ -38,13 +38,16 @@ export function formatResponse(
     ...(pagination ? { pagination } : {}),
   };
 
-  let serialized = JSON.stringify(response, null, 2);
+  const bigIntReplacer = (_key: string, value: unknown) =>
+    typeof value === "bigint" ? value.toString() : value;
+
+  let serialized = JSON.stringify(response, bigIntReplacer, 2);
 
   if (serialized.length > maxSize) {
     // Truncate data field and mark as truncated
     response.truncated = true;
     response.data = `[TRUNCATED — response exceeded ${maxSize} chars. Use pagination parameters to fetch a specific page.]`;
-    serialized = JSON.stringify(response, null, 2);
+    serialized = JSON.stringify(response, bigIntReplacer, 2);
   }
 
   return serialized;

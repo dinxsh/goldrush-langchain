@@ -42,8 +42,7 @@ Use when: user wants Bitcoin transaction history, sent/received BTC, or to audit
       const { pageSize, pageNumber } = clampPage(input.pageSize, input.pageNumber);
       const result = await this.client.call(this.name, () =>
         this.client.BitcoinService.getTransactionsForBtcAddress(
-          input.address,
-          { pageSize, pageNumber }
+          { address: input.address, pageSize, pageNumber }
         )
       );
       return formatResponse(result, this.name, this.client.config.maxResponseSize);

@@ -5,26 +5,22 @@ import type { GoldRushClient } from "../../client.js";
 import { formatResponse, formatError } from "../../utils/format-response.js";
 import { clampPage } from "../../utils/paginate.js";
 
-export class EventsLatestBlockTool extends StructuredTool {
-  name = "goldrush_events_latest_block";
-  description = `Fetch all event logs from the latest block or a range of blocks on a chain.
-Includes sender contract metadata and decoded log events.
-Use when: user wants to monitor recent blockchain events, scan block activity, or observe real-time on-chain events.`;
+export class BlockHeightsByDateTool extends StructuredTool {
+  name = "goldrush_block_heights_by_date";
+  description = `Get all block heights that were produced within a specific date range on a chain.
+Useful for aligning calendar dates with block numbers for historical queries.
+Use when: user has a date range and needs the corresponding block numbers to use in other historical queries.`;
 
   schema = z.object({
     chainName: ChainNameEnum.describe("Blockchain network slug"),
-    startingBlock: z
-      .number()
-      .int()
-      .positive()
-      .optional()
-      .describe("Starting block number for range query (optional — defaults to latest block)"),
-    endingBlock: z
-      .number()
-      .int()
-      .positive()
-      .optional()
-      .describe("Ending block number for range query (optional)"),
+    startDate: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+      .describe("Start date in YYYY-MM-DD format"),
+    endDate: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+      .describe("End date in YYYY-MM-DD format"),
     pageSize: z
       .number()
       .int()
@@ -50,15 +46,11 @@ Use when: user wants to monitor recent blockchain events, scan block activity, o
     try {
       const { pageSize, pageNumber } = clampPage(input.pageSize, input.pageNumber);
       const result = await this.client.call(this.name, () =>
-        this.client.BaseService.getLogEventsByAddressByPage(
+        this.client.BaseService.getBlockHeightsByPage(
           input.chainName,
-          "",
-          {
-            startingBlock: input.startingBlock,
-            endingBlock: input.endingBlock,
-            pageSize,
-            pageNumber,
-          }
+          input.startDate,
+          input.endDate,
+          { pageSize, pageNumber }
         )
       );
       return formatResponse(result, this.name, this.client.config.maxResponseSize);

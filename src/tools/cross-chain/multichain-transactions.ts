@@ -62,7 +62,7 @@ Use when: user wants activity across multiple wallets or chains simultaneously, 
       const result = await this.client.call(this.name, () =>
         this.client.AllChainsService.getMultiChainMultiAddressTransactions({
           addresses: input.addresses,
-          chains: input.chains,
+          chains: input.chains as unknown as import("@covalenthq/client-sdk").ChainName[] | undefined,
           limit: input.limit,
           before: input.before,
           after: input.after,

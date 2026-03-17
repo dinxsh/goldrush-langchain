@@ -56,12 +56,12 @@ export class GoldRushClient {
     throw new GoldRushToolError(toolName, lastErr);
   }
 
-  get BalanceService() { return this.sdk.BalanceService; }
-  get TransactionService() { return this.sdk.TransactionService; }
-  get NftService() { return this.sdk.NftService; }
-  get SecurityService() { return this.sdk.SecurityService; }
-  get BitcoinService() { return this.sdk.BitcoinService; }
-  get PricingService() { return this.sdk.PricingService; }
-  get BaseService() { return this.sdk.BaseService; }
-  get AllChainsService() { return this.sdk.AllChainsService; }
+  get BalanceService(): SdkClient["BalanceService"] { return this.sdk.BalanceService; }
+  get TransactionService(): SdkClient["TransactionService"] { return this.sdk.TransactionService; }
+  get NftService(): SdkClient["NftService"] { return this.sdk.NftService; }
+  get SecurityService(): SdkClient["SecurityService"] { return this.sdk.SecurityService; }
+  get BitcoinService(): SdkClient["BitcoinService"] { return this.sdk.BitcoinService; }
+  get PricingService(): SdkClient["PricingService"] { return this.sdk.PricingService; }
+  get BaseService(): SdkClient["BaseService"] { return this.sdk.BaseService; }
+  get AllChainsService(): SdkClient["AllChainsService"] { return this.sdk.AllChainsService; }
 }

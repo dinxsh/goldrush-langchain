@@ -53,7 +53,7 @@ Use when: user wants a cross-chain portfolio overview, total holdings across cha
       const result = await this.client.call(this.name, () =>
         this.client.AllChainsService.getMultiChainBalances(input.walletAddress, {
           quoteCurrency: input.quoteCurrency as "USD",
-          chains: input.chains as string[] | undefined,
+          chains: input.chains as unknown as import("@covalenthq/client-sdk").ChainName[] | undefined,
           before: input.before,
           limit: input.limit,
           cutoffTimestamp: input.cutoffTimestamp,

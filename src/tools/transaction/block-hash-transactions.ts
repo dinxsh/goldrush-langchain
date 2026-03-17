@@ -25,10 +25,9 @@ Use when: user has a block hash (0x...) rather than a block number and wants its
   protected async _call(input: z.infer<typeof this.schema>): Promise<string> {
     try {
       const result = await this.client.call(this.name, () =>
-        this.client.TransactionService.getTransactionsForBlockHashByPage(
+        this.client.TransactionService.getTransactionsForBlock(
           input.chainName,
-          input.blockHash,
-          0
+          input.blockHash
         )
       );
       return formatResponse(result, this.name, this.client.config.maxResponseSize);
